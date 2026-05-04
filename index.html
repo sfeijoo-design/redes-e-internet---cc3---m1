@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crónica Viva de Internet — Narrativa Interactiva</title>
+  <style>
+    :root { --bg:#0f172a; --text:#e2e8f0; --muted:#94a3b8; --card:#111827; --accent:#22d3ee; }
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#020617,#0b1226 35%,#0f172a);color:var(--text)}
+    header{padding:2rem 1rem 1rem;max-width:1100px;margin:auto}
+    h1{margin:.2rem 0 1rem;font-size:clamp(1.8rem,4vw,3rem)}
+    p.lead{color:var(--muted);max-width:850px;line-height:1.6}
+    .layout{max-width:1100px;margin:auto;padding:1rem;display:grid;grid-template-columns:280px 1fr;gap:1rem}
+    .timeline-nav{position:sticky;top:1rem;height:max-content;background:#0b1020;border:1px solid #1f2937;border-radius:14px;padding:.8rem}
+    .timeline-nav button{display:block;width:100%;text-align:left;background:transparent;border:1px solid #1f2937;color:var(--text);padding:.7rem;border-radius:10px;margin:.45rem 0;cursor:pointer}
+    .timeline-nav button.active{border-color:var(--accent);background:#10223a}
+    .stage{display:none;border-radius:18px;padding:1.2rem;border:1px solid #1f2937;min-height:430px}
+    .stage.active{display:block}
+    .era-chip{display:inline-block;padding:.2rem .6rem;border-radius:999px;font-size:.8rem;margin-bottom:.6rem}
+    .retro-60s{background:repeating-linear-gradient(45deg,#2d1b69,#2d1b69 10px,#110f2e 10px,#110f2e 20px)}
+    .retro-60s .era-chip{background:#f59e0b;color:#111827}
+    .retro-80s{background:linear-gradient(135deg,#2c003e,#001b48);}
+    .retro-80s .era-chip{background:#22d3ee;color:#021024}
+    .retro-90s{background:linear-gradient(180deg,#1f2937,#111827);font-family:"Courier New",monospace}
+    .retro-90s .era-chip{background:#93c5fd;color:#111827}
+    .modern-00{background:linear-gradient(160deg,#0b3b2c,#0a1e35)}
+    .modern-00 .era-chip{background:#86efac;color:#052e16}
+    .modern-20{background:linear-gradient(145deg,#1e1b4b,#111827)}
+    .modern-20 .era-chip{background:#f0abfc;color:#3b0764}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;margin-top:.8rem}
+    .card{background:rgba(2,6,23,.55);border:1px solid #334155;border-radius:12px;padding:.8rem}
+    .card h4{margin:.1rem 0 .4rem}
+    .card p{margin:0;color:#cbd5e1;line-height:1.45;font-size:.95rem}
+    .toolbar{display:flex;gap:.6rem;flex-wrap:wrap;margin:.9rem 0}
+    .toolbar button{background:#0b1326;border:1px solid #334155;color:var(--text);padding:.5rem .8rem;border-radius:10px;cursor:pointer}
+    .quiz{margin-top:1rem;background:rgba(15,23,42,.6);border:1px dashed #475569;border-radius:12px;padding:.8rem}
+    .feedback{margin-top:.6rem;color:#a7f3d0;font-weight:600}
+    details{margin-top:1rem;background:#0b1326;border:1px solid #334155;border-radius:10px;padding:.6rem}
+    footer{max-width:1100px;margin:1rem auto 2rem;padding:0 1rem;color:#94a3b8}
+    @media (max-width:900px){.layout{grid-template-columns:1fr}.timeline-nav{position:relative;top:auto}}
+  </style>
+</head>
+<body>
+  <header>
+    <p>Recurso didáctico para docentes de informática</p>
+    <h1>Crónica viva de la evolución de Internet</h1>
+    <p class="lead">Esta página cuenta la historia de redes e Internet como una narrativa interactiva en línea de tiempo. En cada etapa verás el <strong>contexto histórico</strong>, los <strong>conceptos técnicos</strong> y su conexión con el aula: definición de redes, componentes, topologías, modelo TCP/IP y protocolos como DNS, HTTP/HTTPS, TCP/UDP, DHCP, SMTP y FTP.</p>
+  </header>
+
+  <main class="layout">
+    <aside class="timeline-nav" id="nav"></aside>
+    <section id="content"></section>
+  </main>
+
+  <footer>
+    <details>
+      <summary><strong>Apéndice: descripción breve de los estilos artísticos por época</strong></summary>
+      <ul>
+        <li><strong>1960s:</strong> estética laboratorio analógico (patrones repetitivos, tonos oscuros y ámbar) para representar ARPANET y la Guerra Fría.</li>
+        <li><strong>1980s:</strong> estética neón y sintetizador, evocando la estandarización de TCP/IP y el auge de redes académicas.</li>
+        <li><strong>1990s:</strong> estilo terminal/mono, aludiendo a la web temprana, HTML inicial y cultura “dial-up”.</li>
+        <li><strong>2000s:</strong> transición a diseño más limpio y corporativo, reflejando la masificación de banda ancha y servicios web.</li>
+        <li><strong>2020s:</strong> visual pulido con gradientes modernos, simbolizando nube, móvil, IoT, streaming y ciberseguridad actual.</li>
+      </ul>
+    </details>
+  </footer>
+
+<script>
+const stages = [
+  {
+    id:'s1',title:'1969 · El origen: ARPANET',cls:'retro-60s',
+    story:'Nace la idea de una red resistente: si una parte cae, el resto sigue operando. ARPANET conecta cuatro universidades y marca la lógica descentralizada.',
+    points:[
+      ['¿Qué es una red?','Conjunto de dispositivos (nodos) que comparten datos y recursos.'],
+      ['LAN vs WAN','LAN: alcance local (aula/casa). WAN: gran escala (ciudades/países). Internet es la WAN global.'],
+      ['Cambio clave','De mensajes en bloque a paquetes: mayor eficiencia y convivencia de tráfico.']
+    ]
+  },
+  {
+    id:'s2',title:'1983 · TCP/IP unifica el lenguaje',cls:'retro-80s',
+    story:'Con TCP/IP, redes distintas empiezan a “hablar” entre sí. Aquí se consolida la arquitectura base de Internet moderna.',
+    points:[
+      ['Modelo TCP/IP (4 capas)','Aplicación, Transporte, Internet, Interfaz de red.'],
+      ['Dirección IP','Identificador único, como dirección postal digital (IPv4/IPv6).'],
+      ['Enrutamiento','Routers consultan tablas y eligen caminos para cada paquete.']
+    ]
+  },
+  {
+    id:'s3',title:'1989–1991 · WWW y apertura al público',cls:'retro-90s',
+    story:'Tim Berners-Lee impulsa la Web: páginas enlazadas y navegación por hipertexto. Internet deja de ser solo académica/militar.',
+    points:[
+      ['HTTP/HTTPS','Reglas para pedir y transferir recursos web. HTTPS agrega cifrado.'],
+      ['DNS','Traduce nombres (ej. ejemplo.com) a IP numéricas.'],
+      ['SMTP/FTP','SMTP para envío de correo; FTP para transferencia de archivos.']
+    ]
+  },
+  {
+    id:'s4',title:'2000s · Internet en hogares y escuelas',cls:'modern-00',
+    story:'La banda ancha se expande. La red escolar crece y surgen prácticas cotidianas de administración de infraestructura.',
+    points:[
+      ['Componentes físicos','Cobre, fibra, radio (Wi‑Fi), NIC, switches y routers.'],
+      ['Red lógica','Subredes, puertas de enlace y tablas de enrutamiento.'],
+      ['DHCP','Asignación automática de IP al conectarse a una red.']
+    ]
+  },
+  {
+    id:'s5',title:'2020s · Tiempo real, nube e IoT',cls:'modern-20',
+    story:'Videollamadas, streaming y videojuegos demandan decisiones finas entre confiabilidad y latencia.',
+    points:[
+      ['TCP vs UDP','TCP prioriza integridad/orden; UDP prioriza velocidad/baja latencia.'],
+      ['Topologías','Estrella (común), bus/anillo (históricas), malla (alta redundancia).'],
+      ['Desafío docente','Explicar red como sistema socio-técnico: infraestructura, protocolos y uso responsable.']
+    ]
+  }
+];
+
+const nav = document.getElementById('nav');
+const content = document.getElementById('content');
+
+function render(){
+  nav.innerHTML = stages.map((s,i)=>`<button data-id="${s.id}" class="${i===0?'active':''}">${s.title}</button>`).join('');
+  content.innerHTML = stages.map((s,i)=>`
+    <article id="${s.id}" class="stage ${s.cls} ${i===0?'active':''}">
+      <span class="era-chip">Etapa ${i+1}</span>
+      <h2>${s.title}</h2>
+      <p>${s.story}</p>
+      <div class="cards">
+        ${s.points.map(p=>`<div class="card"><h4>${p[0]}</h4><p>${p[1]}</p></div>`).join('')}
+      </div>
+      ${i===4?quizBlock():''}
+    </article>`).join('');
+
+  nav.querySelectorAll('button').forEach(btn=>btn.onclick=()=>activate(btn.dataset.id));
+}
+
+function activate(id){
+  nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.id===id));
+  content.querySelectorAll('.stage').forEach(a=>a.classList.toggle('active',a.id===id));
+}
+
+function quizBlock(){
+  return `<div class="quiz">
+    <h3>Mini misión pedagógica</h3>
+    <p>Para un streaming escolar en vivo, ¿qué protocolo de transporte suele ajustarse mejor si priorizas fluidez y baja latencia?</p>
+    <div class="toolbar">
+      <button onclick="check('tcp')">TCP</button>
+      <button onclick="check('udp')">UDP</button>
+    </div>
+    <div id="fb" class="feedback"></div>
+  </div>`;
+}
+
+window.check = function(ans){
+  const fb = document.getElementById('fb');
+  fb.textContent = ans==='udp' ? '✅ Correcto: UDP suele preferirse para tiempo real (acepta pérdida ocasional).' : 'ℹ️ TCP asegura orden e integridad; útil cuando perder datos no es aceptable.';
+}
+
+render();
+</script>
+</body>
+</html>
