@@ -1,161 +1,159 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="noche">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Crónica Viva de Internet — Narrativa Interactiva</title>
+  <title>Crónica de la Red de Redes · Historia Interactiva</title>
   <style>
-    :root { --bg:#0f172a; --text:#e2e8f0; --muted:#94a3b8; --card:#111827; --accent:#22d3ee; }
-    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;background:linear-gradient(180deg,#020617,#0b1226 35%,#0f172a);color:var(--text)}
-    header{padding:2rem 1rem 1rem;max-width:1100px;margin:auto}
-    h1{margin:.2rem 0 1rem;font-size:clamp(1.8rem,4vw,3rem)}
-    p.lead{color:var(--muted);max-width:850px;line-height:1.6}
-    .layout{max-width:1100px;margin:auto;padding:1rem;display:grid;grid-template-columns:280px 1fr;gap:1rem}
-    .timeline-nav{position:sticky;top:1rem;height:max-content;background:#0b1020;border:1px solid #1f2937;border-radius:14px;padding:.8rem}
-    .timeline-nav button{display:block;width:100%;text-align:left;background:transparent;border:1px solid #1f2937;color:var(--text);padding:.7rem;border-radius:10px;margin:.45rem 0;cursor:pointer}
-    .timeline-nav button.active{border-color:var(--accent);background:#10223a}
-    .stage{display:none;border-radius:18px;padding:1.2rem;border:1px solid #1f2937;min-height:430px}
-    .stage.active{display:block}
-    .era-chip{display:inline-block;padding:.2rem .6rem;border-radius:999px;font-size:.8rem;margin-bottom:.6rem}
-    .retro-60s{background:repeating-linear-gradient(45deg,#2d1b69,#2d1b69 10px,#110f2e 10px,#110f2e 20px)}
-    .retro-60s .era-chip{background:#f59e0b;color:#111827}
-    .retro-80s{background:linear-gradient(135deg,#2c003e,#001b48);}
-    .retro-80s .era-chip{background:#22d3ee;color:#021024}
-    .retro-90s{background:linear-gradient(180deg,#1f2937,#111827);font-family:"Courier New",monospace}
-    .retro-90s .era-chip{background:#93c5fd;color:#111827}
-    .modern-00{background:linear-gradient(160deg,#0b3b2c,#0a1e35)}
-    .modern-00 .era-chip{background:#86efac;color:#052e16}
-    .modern-20{background:linear-gradient(145deg,#1e1b4b,#111827)}
-    .modern-20 .era-chip{background:#f0abfc;color:#3b0764}
-    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:.8rem;margin-top:.8rem}
-    .card{background:rgba(2,6,23,.55);border:1px solid #334155;border-radius:12px;padding:.8rem}
-    .card h4{margin:.1rem 0 .4rem}
-    .card p{margin:0;color:#cbd5e1;line-height:1.45;font-size:.95rem}
-    .toolbar{display:flex;gap:.6rem;flex-wrap:wrap;margin:.9rem 0}
-    .toolbar button{background:#0b1326;border:1px solid #334155;color:var(--text);padding:.5rem .8rem;border-radius:10px;cursor:pointer}
-    .quiz{margin-top:1rem;background:rgba(15,23,42,.6);border:1px dashed #475569;border-radius:12px;padding:.8rem}
-    .feedback{margin-top:.6rem;color:#a7f3d0;font-weight:600}
-    details{margin-top:1rem;background:#0b1326;border:1px solid #334155;border-radius:10px;padding:.6rem}
-    footer{max-width:1100px;margin:1rem auto 2rem;padding:0 1rem;color:#94a3b8}
-    @media (max-width:900px){.layout{grid-template-columns:1fr}.timeline-nav{position:relative;top:auto}}
+    :root{
+      --bg:#090d1a;--bg2:#0f172a;--panel:#111827cc;--text:#e5e7eb;--muted:#9ca3af;
+      --accent:#22d3ee;--accent2:#f472b6;--ok:#34d399;--warn:#fbbf24;--radius:16px;
+      --shadow:0 10px 35px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,Segoe UI,system-ui,sans-serif;color:var(--text);background:radial-gradient(circle at 20% -10%,#1d2a52 0,#090d1a 45%),linear-gradient(#090d1a,#0f172a)}
+    .grain::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:3px 3px}
+    .wrap{max-width:1200px;margin:auto;padding:1rem}
+    header{padding:2rem 1rem 1.2rem}
+    h1{font-size:clamp(2rem,4vw,3.5rem);margin:.4rem 0 1rem;line-height:1.1}
+    .lead{max-width:900px;color:var(--muted);line-height:1.7}
+    .hero-badges{display:flex;gap:.5rem;flex-wrap:wrap;margin:.8rem 0}
+    .badge{padding:.25rem .65rem;border:1px solid #334155;border-radius:999px;background:#0b1224;color:#cbd5e1;font-size:.82rem}
+    .layout{display:grid;grid-template-columns:300px 1fr;gap:1rem}
+    .nav{position:sticky;top:1rem;height:max-content;background:var(--panel);backdrop-filter:blur(6px);border:1px solid #1f2937;border-radius:var(--radius);padding:.8rem;box-shadow:var(--shadow)}
+    .nav h3{margin:.2rem 0 .8rem;font-size:1rem}
+    .nav button{width:100%;text-align:left;border:1px solid #334155;background:#0b1326;color:#e2e8f0;padding:.7rem;border-radius:12px;margin:.38rem 0;cursor:pointer;transition:.2s}
+    .nav button:hover{transform:translateX(4px);border-color:var(--accent)}
+    .nav button.active{background:#10223a;border-color:var(--accent)}
+    .progress{height:8px;background:#111827;border-radius:999px;overflow:hidden;margin-top:.7rem}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+    .scene{display:none;border-radius:22px;padding:1.2rem;border:1px solid #334155;box-shadow:var(--shadow)} .scene.active{display:block;animation:fade .35s ease}
+    @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+    .era{display:inline-block;border-radius:999px;padding:.22rem .65rem;font-size:.8rem;font-weight:600}
+    .retro60{background:repeating-linear-gradient(45deg,#2d1b69,#2d1b69 12px,#110f2e 12px,#110f2e 24px)} .retro60 .era{background:#fbbf24;color:#111827}
+    .retro80{background:linear-gradient(120deg,#2c003e,#001b48)} .retro80 .era{background:#22d3ee;color:#06213a}
+    .retro90{background:linear-gradient(180deg,#1f2937,#111827)} .retro90 .era{background:#93c5fd;color:#0f172a;font-family:ui-monospace,Consolas}
+    .dosmil{background:linear-gradient(145deg,#0b3b2c,#0a1e35)} .dosmil .era{background:#86efac;color:#052e16}
+    .hoy{background:linear-gradient(145deg,#1e1b4b,#111827)} .hoy .era{background:#f0abfc;color:#3b0764}
+    .story{line-height:1.75;color:#e2e8f0}
+    .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.75rem;margin:.8rem 0}
+    .card{background:#020617aa;border:1px solid #475569;border-radius:14px;padding:.8rem}
+    .card h4{margin:.1rem 0 .4rem}.card p{margin:0;color:#cbd5e1;line-height:1.6}
+    .mini{font-size:.92rem;color:#94a3b8}
+    .mission{margin-top:1rem;padding:1rem;border:1px dashed #64748b;border-radius:12px;background:#0b1226b0}
+    .opt{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem}
+    .opt button{background:#111827;color:#f1f5f9;border:1px solid #475569;padding:.5rem .8rem;border-radius:10px;cursor:pointer}
+    .fb{margin-top:.6rem;font-weight:600}
+    details{margin-top:.8rem;background:#0b1326;border:1px solid #334155;border-radius:12px;padding:.7rem}
+    footer{margin:1rem auto 2rem;max-width:1200px;padding:0 1rem;color:#a8b2c2}
+    @media (max-width:960px){.layout{grid-template-columns:1fr}.nav{position:relative}}
   </style>
 </head>
-<body>
-  <header>
-    <p>Recurso didáctico para docentes de informática</p>
-    <h1>Crónica viva de la evolución de Internet</h1>
-    <p class="lead">Esta página cuenta la historia de redes e Internet como una narrativa interactiva en línea de tiempo. En cada etapa verás el <strong>contexto histórico</strong>, los <strong>conceptos técnicos</strong> y su conexión con el aula: definición de redes, componentes, topologías, modelo TCP/IP y protocolos como DNS, HTTP/HTTPS, TCP/UDP, DHCP, SMTP y FTP.</p>
+<body class="grain">
+  <header class="wrap">
+    <p>Recurso inmersivo para docentes de informática</p>
+    <h1>Crónica de la Red de Redes</h1>
+    <p class="lead">Imagina que eres la persona encargada de mantener conectada una escuela durante cinco décadas de cambios tecnológicos. Esta historia te lleva, etapa por etapa, desde laboratorios militares hasta aulas con streaming, IA y nube. Cada hito combina narrativa, contexto histórico y conceptos técnicos para enseñar redes de forma profunda, amigable y memorable.</p>
+    <div class="hero-badges">
+      <span class="badge">Narrativa interactiva</span><span class="badge">TCP/IP</span><span class="badge">Topologías</span><span class="badge">Protocolos de Internet</span><span class="badge">Aula de informática</span>
+    </div>
   </header>
 
-  <main class="layout">
-    <aside class="timeline-nav" id="nav"></aside>
+  <main class="wrap layout">
+    <aside class="nav" id="nav"></aside>
     <section id="content"></section>
   </main>
 
   <footer>
     <details>
-      <summary><strong>Apéndice: descripción breve de los estilos artísticos por época</strong></summary>
+      <summary><strong>Apéndice · Estilo artístico por época (breve)</strong></summary>
       <ul>
-        <li><strong>1960s:</strong> estética laboratorio analógico (patrones repetitivos, tonos oscuros y ámbar) para representar ARPANET y la Guerra Fría.</li>
-        <li><strong>1980s:</strong> estética neón y sintetizador, evocando la estandarización de TCP/IP y el auge de redes académicas.</li>
-        <li><strong>1990s:</strong> estilo terminal/mono, aludiendo a la web temprana, HTML inicial y cultura “dial-up”.</li>
-        <li><strong>2000s:</strong> transición a diseño más limpio y corporativo, reflejando la masificación de banda ancha y servicios web.</li>
-        <li><strong>2020s:</strong> visual pulido con gradientes modernos, simbolizando nube, móvil, IoT, streaming y ciberseguridad actual.</li>
+        <li><strong>60s analógico:</strong> patrones repetitivos, contraste bajo y tonos ámbar para representar ingeniería de guerra fría.</li>
+        <li><strong>80s neón:</strong> mezcla púrpura-cian evocando estandarización y expansión académica.</li>
+        <li><strong>90s terminal:</strong> estética sobria/monoespaciada, guiño al nacimiento de la Web pública.</li>
+        <li><strong>2000s limpio:</strong> transición al “internet de uso cotidiano” en hogares y centros educativos.</li>
+        <li><strong>2020s pulido:</strong> gradientes profundos y foco en tiempo real, nube, movilidad y ciberseguridad.</li>
       </ul>
     </details>
   </footer>
 
 <script>
-const stages = [
-  {
-    id:'s1',title:'1969 · El origen: ARPANET',cls:'retro-60s',
-    story:'Nace la idea de una red resistente: si una parte cae, el resto sigue operando. ARPANET conecta cuatro universidades y marca la lógica descentralizada.',
-    points:[
-      ['¿Qué es una red?','Conjunto de dispositivos (nodos) que comparten datos y recursos.'],
-      ['LAN vs WAN','LAN: alcance local (aula/casa). WAN: gran escala (ciudades/países). Internet es la WAN global.'],
-      ['Cambio clave','De mensajes en bloque a paquetes: mayor eficiencia y convivencia de tráfico.']
-    ]
-  },
-  {
-    id:'s2',title:'1983 · TCP/IP unifica el lenguaje',cls:'retro-80s',
-    story:'Con TCP/IP, redes distintas empiezan a “hablar” entre sí. Aquí se consolida la arquitectura base de Internet moderna.',
-    points:[
-      ['Modelo TCP/IP (4 capas)','Aplicación, Transporte, Internet, Interfaz de red.'],
-      ['Dirección IP','Identificador único, como dirección postal digital (IPv4/IPv6).'],
-      ['Enrutamiento','Routers consultan tablas y eligen caminos para cada paquete.']
-    ]
-  },
-  {
-    id:'s3',title:'1989–1991 · WWW y apertura al público',cls:'retro-90s',
-    story:'Tim Berners-Lee impulsa la Web: páginas enlazadas y navegación por hipertexto. Internet deja de ser solo académica/militar.',
-    points:[
-      ['HTTP/HTTPS','Reglas para pedir y transferir recursos web. HTTPS agrega cifrado.'],
-      ['DNS','Traduce nombres (ej. ejemplo.com) a IP numéricas.'],
-      ['SMTP/FTP','SMTP para envío de correo; FTP para transferencia de archivos.']
-    ]
-  },
-  {
-    id:'s4',title:'2000s · Internet en hogares y escuelas',cls:'modern-00',
-    story:'La banda ancha se expande. La red escolar crece y surgen prácticas cotidianas de administración de infraestructura.',
-    points:[
-      ['Componentes físicos','Cobre, fibra, radio (Wi‑Fi), NIC, switches y routers.'],
-      ['Red lógica','Subredes, puertas de enlace y tablas de enrutamiento.'],
-      ['DHCP','Asignación automática de IP al conectarse a una red.']
-    ]
-  },
-  {
-    id:'s5',title:'2020s · Tiempo real, nube e IoT',cls:'modern-20',
-    story:'Videollamadas, streaming y videojuegos demandan decisiones finas entre confiabilidad y latencia.',
-    points:[
-      ['TCP vs UDP','TCP prioriza integridad/orden; UDP prioriza velocidad/baja latencia.'],
-      ['Topologías','Estrella (común), bus/anillo (históricas), malla (alta redundancia).'],
-      ['Desafío docente','Explicar red como sistema socio-técnico: infraestructura, protocolos y uso responsable.']
-    ]
-  }
+const chapters = [
+{ id:'c1', title:'1969 · El pulso inicial (ARPANET)', cls:'retro60',
+  narrative:'Año 1969. En plena Guerra Fría, la prioridad no es “ver videos”, sino mantener viva la comunicación científica y estratégica aunque una parte de la red sea destruida. ARPANET conecta cuatro universidades y deja una idea central: la red debe sobrevivir a fallos.',
+  depth:[
+    ['Qué es una red', 'Un sistema de nodos interconectados que comparte datos y recursos. Nodo puede ser PC, router, impresora o servidor.'],
+    ['LAN vs WAN', 'LAN opera en alcance corto (aula/oficina). WAN cubre grandes distancias. Internet es la WAN más grande existente.'],
+    ['De bloque a paquetes', 'Enviar “en bloque” ocupaba el canal completo; paquetizar permitió múltiples comunicaciones simultáneas.'] ] },
+{ id:'c2', title:'1983 · El idioma común: TCP/IP', cls:'retro80',
+  narrative:'Hasta aquí existían islas de redes. Con TCP/IP (1983), esas islas aprenden a conversar. Nace el lenguaje común de Internet moderna: cada mensaje viaja troceado, direccionado y reconstruido al llegar.',
+  depth:[
+    ['Capas TCP/IP', 'Aplicación (servicio al usuario), Transporte (segmenta y controla), Internet (IP/enrutamiento), Interfaz (medio físico).'],
+    ['IP y enrutamiento', 'La IP identifica origen/destino. Routers consultan tablas para elegir rutas eficientes o alternativas.'],
+    ['Confiabilidad', 'TCP confirma recepción y reenvía pérdidas; base de transferencias íntegras.'] ] },
+{ id:'c3', title:'1989–1991 · La Web abre la puerta', cls:'retro90',
+  narrative:'Tim Berners-Lee propone la World Wide Web. La red deja de ser exclusiva para especialistas: navegar por enlaces transforma Internet en un espacio social y educativo.',
+  depth:[
+    ['HTTP/HTTPS', 'HTTP solicita y transfiere recursos web. HTTPS añade cifrado TLS para confidencialidad e integridad.'],
+    ['DNS', 'Traduce nombres amigables (ej. escuela.edu) a IP numéricas entendibles por máquinas.'],
+    ['SMTP y FTP', 'SMTP estandariza envío de correo; FTP gestiona subida/descarga de archivos entre equipos.'] ] },
+{ id:'c4', title:'2000s · La red entra al aula', cls:'dosmil',
+  narrative:'La banda ancha llega a hogares y escuelas. El rol docente cambia: ya no alcanza con “usar Internet”; hay que comprender cómo funciona para administrarla y enseñarla críticamente.',
+  depth:[
+    ['Componentes físicos', 'Cobre (señal eléctrica), fibra (luz), Wi‑Fi (radio), NIC, switches y routers.'],
+    ['Componentes lógicos', 'Subredes, máscara, gateway, rutas estáticas/dinámicas y políticas de acceso.'],
+    ['Topologías', 'Estrella (común), bus/anillo (históricas), malla (alta redundancia y tolerancia a fallos).'] ] },
+{ id:'c5', title:'2020s · Tiempo real, nube y decisión pedagógica', cls:'hoy',
+  narrative:'Con videollamadas, streaming y laboratorios virtuales, cada decisión de red impacta la experiencia de aprendizaje. El desafío ya no es solo conectar: es conectar con criterio.',
+  depth:[
+    ['TCP vs UDP', 'TCP prioriza integridad y orden (ideal archivos/texto). UDP prioriza latencia baja (streaming/juegos/videollamadas).'],
+    ['DHCP en práctica', 'Automatiza IP, DNS y gateway para simplificar despliegue masivo en centros educativos.'],
+    ['Ciudadanía digital', 'Comprender protocolos permite enseñar seguridad, privacidad y uso responsable de la infraestructura.'] ] }
 ];
 
 const nav = document.getElementById('nav');
 const content = document.getElementById('content');
+let visited = new Set();
 
-function render(){
-  nav.innerHTML = stages.map((s,i)=>`<button data-id="${s.id}" class="${i===0?'active':''}">${s.title}</button>`).join('');
-  content.innerHTML = stages.map((s,i)=>`
-    <article id="${s.id}" class="stage ${s.cls} ${i===0?'active':''}">
-      <span class="era-chip">Etapa ${i+1}</span>
-      <h2>${s.title}</h2>
-      <p>${s.story}</p>
-      <div class="cards">
-        ${s.points.map(p=>`<div class="card"><h4>${p[0]}</h4><p>${p[1]}</p></div>`).join('')}
-      </div>
-      ${i===4?quizBlock():''}
+function mount(){
+  nav.innerHTML = `<h3>Línea de tiempo</h3>${chapters.map((c,i)=>`<button data-id="${c.id}" class="${i===0?'active':''}">${c.title}</button>`).join('')}<div class="progress"><div id="bar" class="bar"></div></div><p class="mini" id="meta">Exploración: 0%</p>`;
+  content.innerHTML = chapters.map((c,i)=>`
+    <article id="${c.id}" class="scene ${c.cls} ${i===0?'active':''}">
+      <span class="era">Capítulo ${i+1}</span>
+      <h2>${c.title}</h2>
+      <p class="story">${c.narrative}</p>
+      <div class="cards">${c.depth.map(d=>`<div class="card"><h4>${d[0]}</h4><p>${d[1]}</p></div>`).join('')}</div>
+      ${i===4?missionBlock():''}
     </article>`).join('');
-
-  nav.querySelectorAll('button').forEach(btn=>btn.onclick=()=>activate(btn.dataset.id));
+  nav.querySelectorAll('button').forEach(b=> b.onclick=()=>activate(b.dataset.id));
+  activate(chapters[0].id);
 }
 
 function activate(id){
-  nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active',b.dataset.id===id));
-  content.querySelectorAll('.stage').forEach(a=>a.classList.toggle('active',a.id===id));
+  nav.querySelectorAll('button').forEach(b=>b.classList.toggle('active', b.dataset.id===id));
+  content.querySelectorAll('.scene').forEach(s=>s.classList.toggle('active', s.id===id));
+  visited.add(id);
+  const pct = Math.round((visited.size/chapters.length)*100);
+  document.getElementById('bar').style.width = pct+'%';
+  document.getElementById('meta').textContent = `Exploración: ${pct}%`;
 }
 
-function quizBlock(){
-  return `<div class="quiz">
-    <h3>Mini misión pedagógica</h3>
-    <p>Para un streaming escolar en vivo, ¿qué protocolo de transporte suele ajustarse mejor si priorizas fluidez y baja latencia?</p>
-    <div class="toolbar">
-      <button onclick="check('tcp')">TCP</button>
-      <button onclick="check('udp')">UDP</button>
+function missionBlock(){
+  return `<div class="mission">
+    <h3>Misión final: “Directora de Infraestructura Escolar”</h3>
+    <p>Debes emitir una clase en vivo para familias con conexión variable. ¿Qué protocolo de transporte priorizarías para mantener fluidez, aceptando pérdida mínima de paquetes?</p>
+    <div class="opt">
+      <button onclick="answer('tcp')">TCP</button>
+      <button onclick="answer('udp')">UDP</button>
     </div>
-    <div id="fb" class="feedback"></div>
+    <div id="fb" class="fb"></div>
+    <details><summary>¿Por qué esta pregunta importa?</summary><p>Porque enseña a elegir tecnología según objetivo pedagógico: integridad total (TCP) vs. inmediatez (UDP).</p></details>
   </div>`;
 }
-
-window.check = function(ans){
+window.answer = (x)=>{
   const fb = document.getElementById('fb');
-  fb.textContent = ans==='udp' ? '✅ Correcto: UDP suele preferirse para tiempo real (acepta pérdida ocasional).' : 'ℹ️ TCP asegura orden e integridad; útil cuando perder datos no es aceptable.';
-}
-
-render();
+  fb.textContent = x==='udp' ? '✅ Correcto: UDP suele ser preferible para tiempo real por su baja latencia.' : 'ℹ️ TCP aporta orden e integridad; útil cuando no puedes tolerar pérdida de datos.';
+};
+mount();
 </script>
 </body>
 </html>
